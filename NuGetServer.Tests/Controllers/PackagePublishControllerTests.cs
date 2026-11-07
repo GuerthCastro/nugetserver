@@ -24,7 +24,7 @@ public class PackagePublishControllerTests
         _packageStorageService = new Mock<IPackageStorageService>();
         _nuGetServer = new Entities.Config.NuGetServer
         {
-            ApiKey = "DragonflyKey123"
+            ApiKey = "TestApiKey123"
         };
 
         _controller = new PackagePublishController(_logger.Object, _packageStorageService.Object, _nuGetServer)
@@ -75,7 +75,7 @@ public class PackagePublishControllerTests
     public async Task PublishPackage_Should_Return_BadRequest_When_File_Is_Not_Nupkg()
     {
         // Arrange
-        var file = CreateFakeFormFile("Dragonfly.Utils.txt");
+        var file = CreateFakeFormFile("Sample.Utils.txt");
         SetRequestFile(file);
 
         // Act
@@ -89,7 +89,7 @@ public class PackagePublishControllerTests
     public async Task PublishPackage_Should_Return_Ok_When_Successful()
     {
         // Arrange
-        var file = CreateFakeFormFile("Dragonfly.Utils.1.0.0.nupkg");
+        var file = CreateFakeFormFile("Sample.Utils.1.0.0.nupkg");
         SetRequestFile(file);
 
         _packageStorageService
@@ -115,7 +115,7 @@ public class PackagePublishControllerTests
     public async Task DeletePackage_Should_Return_Unauthorized_When_ApiKey_Invalid()
     {
         // Act
-        var result = await _controller.DeletePackage("InvalidKey", "Dragonfly.Utils", "1.0.0");
+        var result = await _controller.DeletePackage("InvalidKey", "Sample.Utils", "1.0.0");
 
         // Assert
         result.Should().BeOfType<UnauthorizedObjectResult>();
@@ -126,11 +126,11 @@ public class PackagePublishControllerTests
     {
         // Arrange
         _packageStorageService
-            .Setup(s => s.DeletePackage("Dragonfly.Utils", "1.0.0"))
+            .Setup(s => s.DeletePackage("Sample.Utils", "1.0.0"))
             .ReturnsAsync(false);
 
         // Act
-        var result = await _controller.DeletePackage(_nuGetServer.ApiKey, "Dragonfly.Utils", "1.0.0");
+        var result = await _controller.DeletePackage(_nuGetServer.ApiKey, "Sample.Utils", "1.0.0");
 
         // Assert
         result.Should().BeOfType<NotFoundObjectResult>();
@@ -141,20 +141,20 @@ public class PackagePublishControllerTests
     {
         // Arrange
         _packageStorageService
-            .Setup(s => s.DeletePackage("Dragonfly.Utils", "1.0.0"))
+            .Setup(s => s.DeletePackage("Sample.Utils", "1.0.0"))
             .ReturnsAsync(true);
 
         // Act
-        var result = await _controller.DeletePackage(_nuGetServer.ApiKey, "Dragonfly.Utils", "1.0.0");
+        var result = await _controller.DeletePackage(_nuGetServer.ApiKey, "Sample.Utils", "1.0.0");
 
         // Assert
         var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
         var response = okResult.Value!;
         var message = response.GetType().GetProperty("message")!.GetValue(response)!.ToString();
 
-        message.Should().Be("Package Dragonfly.Utils 1.0.0 deleted successfully");
+        message.Should().Be("Package Sample.Utils 1.0.0 deleted successfully");
 
-        _packageStorageService.Verify(s => s.DeletePackage("Dragonfly.Utils", "1.0.0"), Times.Once);
+        _packageStorageService.Verify(s => s.DeletePackage("Sample.Utils", "1.0.0"), Times.Once);
     }
 
 }

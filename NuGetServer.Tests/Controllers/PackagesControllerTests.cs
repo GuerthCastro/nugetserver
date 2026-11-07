@@ -80,7 +80,7 @@ public class PackagesControllerTests
     public async Task UploadPackage_Should_Return_BadRequest_When_File_Not_Nupkg()
     {
         // Arrange
-        var file = CreateFakeFormFile("Dragonfly.Utils.txt");
+        var file = CreateFakeFormFile("Sample.Utils.txt");
         SetRequestFile(file);
 
         // Act
@@ -94,7 +94,7 @@ public class PackagesControllerTests
     public async Task UploadPackage_Should_Return_BadRequest_When_SavePackage_Fails()
     {
         // Arrange
-        var file = CreateFakeFormFile("Dragonfly.Utils.1.0.0.nupkg");
+        var file = CreateFakeFormFile("Sample.Utils.1.0.0.nupkg");
         SetRequestFile(file);
 
         _packageStorageService
@@ -112,7 +112,7 @@ public class PackagesControllerTests
     public async Task UploadPackage_Should_Return_Ok_When_Successful()
     {
         // Arrange
-        var file = CreateFakeFormFile("Dragonfly.Utils.1.0.0.nupkg");
+        var file = CreateFakeFormFile("Sample.Utils.1.0.0.nupkg");
         SetRequestFile(file);
 
         _packageStorageService
@@ -139,7 +139,7 @@ public class PackagesControllerTests
     public async Task UploadPackage_Should_Return_InternalServerError_On_Exception()
     {
         // Arrange
-        var file = CreateFakeFormFile("Dragonfly.Utils.1.0.0.nupkg");
+        var file = CreateFakeFormFile("Sample.Utils.1.0.0.nupkg");
         SetRequestFile(file);
 
         _packageStorageService
@@ -159,11 +159,11 @@ public class PackagesControllerTests
     {
         // Arrange
         _packageStorageService
-            .Setup(s => s.GetPackageStream("Dragonfly.Utils", "1.0.0"))
+            .Setup(s => s.GetPackageStream("Sample.Utils", "1.0.0"))
             .ReturnsAsync((null, null));
 
         // Act
-        var result = await _controller.DownloadPackage("Dragonfly.Utils", "1.0.0");
+        var result = await _controller.DownloadPackage("Sample.Utils", "1.0.0");
 
         // Assert
         result.Should().BeOfType<NotFoundObjectResult>();
@@ -175,11 +175,11 @@ public class PackagesControllerTests
         // Arrange
         var stream = new MemoryStream(Encoding.UTF8.GetBytes("fake package"));
         _packageStorageService
-            .Setup(s => s.GetPackageStream("Dragonfly.Utils", "1.0.0"))
+            .Setup(s => s.GetPackageStream("Sample.Utils", "1.0.0"))
             .ReturnsAsync((stream, "application/octet-stream"));
 
         // Act
-        var result = await _controller.DownloadPackage("Dragonfly.Utils", "1.0.0");
+        var result = await _controller.DownloadPackage("Sample.Utils", "1.0.0");
 
         // Assert
         var fileResult = result.Should().BeOfType<FileStreamResult>().Subject;
@@ -191,11 +191,11 @@ public class PackagesControllerTests
     {
         // Arrange
         _packageStorageService
-            .Setup(s => s.GetPackageStream("Dragonfly.Utils", "1.0.0"))
+            .Setup(s => s.GetPackageStream("Sample.Utils", "1.0.0"))
             .ThrowsAsync(new Exception("Unexpected error"));
 
         // Act
-        var result = await _controller.DownloadPackage("Dragonfly.Utils", "1.0.0");
+        var result = await _controller.DownloadPackage("Sample.Utils", "1.0.0");
 
         // Assert
         var objectResult = result.Should().BeOfType<ObjectResult>().Subject;

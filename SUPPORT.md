@@ -93,7 +93,7 @@ For security vulnerabilities, please see our [Security Policy](SECURITY.md) and 
 
 #### Commercial Support
 For commercial support, consulting, or custom development:
-- **Email**: support@dragonflytech.solutions
+- **Email**: guerth.castro@hotmail.com
 
 ### ⏱️ Response Times
 

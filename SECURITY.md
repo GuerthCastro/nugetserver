@@ -27,7 +27,7 @@ Please report security vulnerabilities through one of these methods:
 3. Fill out the vulnerability details
 
 #### Email (Alternative)
-Send an email to: **security@dragonflytech.solutions**
+Send an email to: **guerth.castro@hotmail.com**
 
 Include the following information:
 - Description of the vulnerability
@@ -138,7 +138,7 @@ This policy does not cover:
 ## 📞 Contact
 
 For any questions about this security policy, please contact:
-- **Email**: security@dragonflytech.solutions
+- **Email**: guerth.castro@hotmail.com
 - **GitHub Issues**: For non-security related questions only
 
 ---
