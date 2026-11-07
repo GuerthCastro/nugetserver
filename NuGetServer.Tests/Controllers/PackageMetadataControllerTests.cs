@@ -26,7 +26,7 @@ public class PackageMetadataControllerTests
     public async Task GetPackageVersions_Should_Return_Ok_With_Versions()
     {
         // Arrange
-        var packageId = "Dragonfly.Utils";
+        var packageId = "Sample.Utils";
         var expectedVersions = new List<string> { "1.0.0", "2.0.0" };
 
         _packageStorageService
@@ -55,7 +55,7 @@ public class PackageMetadataControllerTests
     public async Task GetPackageMetadata_Should_Return_Ok_When_Metadata_Exists()
     {
         // Arrange
-        var packageId = "Dragonfly.Utils";
+        var packageId = "Sample.Utils";
         var version = "1.0.0";
 
         var metadata = new NuGetPackageInfo
@@ -84,7 +84,7 @@ public class PackageMetadataControllerTests
     public async Task GetPackageMetadata_Should_Return_NotFound_When_Metadata_Does_Not_Exist()
     {
         // Arrange
-        var packageId = "Dragonfly.Utils";
+        var packageId = "Sample.Utils";
         var version = "1.0.0";
 
         _packageStorageService

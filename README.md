@@ -125,7 +125,7 @@ The server can be configured through `appsettings.json` or environment variables
       "PackagesPath": "/app/nuget-packages"
    },
    "NuGetIndex": {
-      "ServiceName": "Dragonfly NuGet Server",
+      "ServiceName": "Private NuGet Server",
       "ServiceUrl": "http://localhost:5000/nuget"
    }
 }
@@ -176,10 +176,10 @@ dotnet nuget push MyPackage.1.0.0.nupkg --source http://localhost:5000/nuget/upl
 ### Configure NuGet Source
 ```sh
 # Add the server as a package source
-nuget sources add -Name "Dragonfly" -Source http://localhost:5000/nuget
+nuget sources add -Name "PrivateFeed" -Source http://localhost:5000/nuget
 
 # Install packages from the server
-nuget install MyPackage -Source "Dragonfly"
+nuget install MyPackage -Source "PrivateFeed"
 ```
 
 ### Search and Download
@@ -283,26 +283,26 @@ The container includes a health check endpoint:
 
 ```bash
 # Check container health
-docker exec dragonfly-nugetserver curl -f http://localhost:8080/nuget/health || exit 1
+docker exec nugetserver curl -f http://localhost:8080/nuget/health || exit 1
 ```
 
 ### Container Management
 
 ```bash
 # View container logs
-docker logs dragonfly-nugetserver
+docker logs nugetserver
 
 # Update the container
-docker pull dragonfly-nugetserver:latest
-docker stop dragonfly-nugetserver
-docker rm dragonfly-nugetserver
+docker pull nugetserver:latest
+docker stop nugetserver
+docker rm nugetserver
 # Run the new container with same parameters
 
 # Backup packages
-docker cp dragonfly-nugetserver:/app/nuget-packages ./backup/
+docker cp nugetserver:/app/nuget-packages ./backup/
 
 # Access container shell
-docker exec -it dragonfly-nugetserver /bin/bash
+docker exec -it nugetserver /bin/bash
 ```
 
 ### Raspberry Pi Deployment with SSL
@@ -340,7 +340,7 @@ Build the Docker image on your Raspberry Pi:
 cd /path/to/NuGetServer
 
 # Build the image
-docker build -t dragonfly-nugetserver:latest -f NuGetServer/Dockerfile .
+docker build -t nugetserver:latest -f NuGetServer/Dockerfile .
 ```
 
 #### 3. Run the Container with SSL
@@ -349,7 +349,7 @@ Run the container with the SSL certificate mounted:
 
 ```bash
 docker run -d \
-  --name dragonfly-nugetserver \
+  --name nugetserver \
   --restart=always \
   -p 5000:8080 \
   -p 5001:8081 \
@@ -360,7 +360,7 @@ docker run -d \
   -e Kestrel__Certificates__Default__Path=/https/nuget.pfx \
   -e Kestrel__Certificates__Default__Password='yourpassword' \
   -e NuGetIndex__ServiceUrl="https://servername:5001" \
-  dragonfly-nugetserver:latest
+  nugetserver:latest
 ```
 
 Replace:
@@ -449,7 +449,7 @@ The project includes comprehensive unit tests:
 ```json
 {
   "Swagger": {
-    "Title": "Dragonfly NuGet Server",
+    "Title": "Private NuGet Server",
     "Version": "v1", 
     "Description": "Simple private NuGet feed"
   },
@@ -498,10 +498,10 @@ The project includes comprehensive unit tests:
 curl http://localhost:5000/nuget/health
 
 # Monitor container resources
-docker stats dragonfly-nugetserver
+docker stats nugetserver
 
 # View application logs
-docker logs -f dragonfly-nugetserver
+docker logs -f nugetserver
 ```
 
 ### Backup and Recovery

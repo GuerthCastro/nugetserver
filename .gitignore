@@ -134,3 +134,8 @@ Desktop.ini
 *.swp
 *.lock.json
 *.lock
+# Visual Studio user-specific files
+*.user
+
+# Local Postman collections
+*.postman_collection.json

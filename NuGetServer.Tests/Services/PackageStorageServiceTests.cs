@@ -34,7 +34,7 @@ public class PackageStorageServiceTests : IDisposable
     public async Task SavePackage_Should_Save_File_When_Valid()
     {
         // Arrange
-        var fileName = "Dragonfly.Core.1.0.0.nupkg";
+        var fileName = "Sample.Core.1.0.0.nupkg";
         await using var stream = new MemoryStream(new byte[] { 1, 2, 3 });
 
         // Act
@@ -44,7 +44,7 @@ public class PackageStorageServiceTests : IDisposable
         success.Should().BeTrue();
         message.Should().Contain("uploaded successfully");
 
-        var packagePath = Path.Combine(_tempDir, "Dragonfly.Core", "1.0.0", fileName);
+        var packagePath = Path.Combine(_tempDir, "Sample.Core", "1.0.0", fileName);
         File.Exists(packagePath).Should().BeTrue();
     }
 
@@ -52,7 +52,7 @@ public class PackageStorageServiceTests : IDisposable
     public async Task SavePackage_Should_Return_False_When_Not_Nupkg()
     {
         // Arrange
-        var fileName = "Dragonfly.Core.txt";
+        var fileName = "Sample.Core.txt";
         await using var stream = new MemoryStream(new byte[] { 1, 2, 3 });
 
         // Act
@@ -67,15 +67,15 @@ public class PackageStorageServiceTests : IDisposable
     public async Task GetPackageStream_Should_Return_Stream_When_Exists()
     {
         // Arrange
-        var fileName = "Dragonfly.Utils.2.0.0.nupkg";
-        var packageDir = Path.Combine(_tempDir, "Dragonfly.Utils", "2.0.0");
+        var fileName = "Sample.Utils.2.0.0.nupkg";
+        var packageDir = Path.Combine(_tempDir, "Sample.Utils", "2.0.0");
         Directory.CreateDirectory(packageDir);
 
         var filePath = Path.Combine(packageDir, fileName);
         await File.WriteAllBytesAsync(filePath, new byte[] { 10, 20, 30 });
 
         // Act
-        var (stream, contentType) = await _service.GetPackageStream("Dragonfly.Utils", "2.0.0");
+        var (stream, contentType) = await _service.GetPackageStream("Sample.Utils", "2.0.0");
 
         // Assert
         stream.Should().NotBeNull();
@@ -99,11 +99,11 @@ public class PackageStorageServiceTests : IDisposable
     public async Task DeletePackage_Should_Delete_Existing_Package()
     {
         // Arrange
-        var packageDir = Path.Combine(_tempDir, "Dragonfly.Api", "3.0.0");
+        var packageDir = Path.Combine(_tempDir, "Sample.Api", "3.0.0");
         Directory.CreateDirectory(packageDir);
 
         // Act
-        var result = await _service.DeletePackage("Dragonfly.Api", "3.0.0");
+        var result = await _service.DeletePackage("Sample.Api", "3.0.0");
 
         // Assert
         result.Should().BeTrue();
@@ -124,13 +124,13 @@ public class PackageStorageServiceTests : IDisposable
     public async Task PackageExists_Should_Return_True_When_Package_Exists()
     {
         // Arrange
-        var packageDir = Path.Combine(_tempDir, "Dragonfly.Core", "1.0.0");
+        var packageDir = Path.Combine(_tempDir, "Sample.Core", "1.0.0");
         Directory.CreateDirectory(packageDir);
-        var fileName = Path.Combine(packageDir, "Dragonfly.Core.1.0.0.nupkg");
+        var fileName = Path.Combine(packageDir, "Sample.Core.1.0.0.nupkg");
         await File.WriteAllBytesAsync(fileName, new byte[] { 1, 2, 3 });
 
         // Act
-        var exists = await _service.PackageExists("Dragonfly.Core", "1.0.0");
+        var exists = await _service.PackageExists("Sample.Core", "1.0.0");
 
         // Assert
         exists.Should().BeTrue();
@@ -140,13 +140,13 @@ public class PackageStorageServiceTests : IDisposable
     public async Task GetPackageVersions_Should_Return_Ordered_List()
     {
         // Arrange
-        var packageDir = Path.Combine(_tempDir, "Dragonfly.Tools");
+        var packageDir = Path.Combine(_tempDir, "Sample.Tools");
         Directory.CreateDirectory(Path.Combine(packageDir, "1.0.0"));
         Directory.CreateDirectory(Path.Combine(packageDir, "1.0.1"));
         Directory.CreateDirectory(Path.Combine(packageDir, "0.9.0"));
 
         // Act
-        var versions = await _service.GetPackageVersions("Dragonfly.Tools");
+        var versions = await _service.GetPackageVersions("Sample.Tools");
 
         // Assert
         versions.Should().ContainInOrder("0.9.0", "1.0.0", "1.0.1");
@@ -156,7 +156,7 @@ public class PackageStorageServiceTests : IDisposable
     public async Task GetPackageMetadata_Should_Read_Nuspec_Info()
     {
         // Arrange
-        var id = "Dragonfly.Metadata";
+        var id = "Sample.Metadata";
         var version = "1.2.3";
         var packageDir = Path.Combine(_tempDir, id, version);
         Directory.CreateDirectory(packageDir);
@@ -192,7 +192,7 @@ public class PackageStorageServiceTests : IDisposable
     public async Task GetPackageMetadata_Should_Read_Nuspec_Info_With_Namespace()
     {
         // Arrange
-        var id = "Dragonfly.NamespaceTest";
+        var id = "Sample.NamespaceTest";
         var version = "2.1.0";
         var packageDir = Path.Combine(_tempDir, id, version);
         Directory.CreateDirectory(packageDir);
